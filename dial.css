@@ -1,0 +1,120 @@
+/*  ==========================================================================
+    Variables etc
+    ========================================================================== */
+
+    %thin {
+        font-family: "proxima-nova",sans-serif;
+        font-style: normal;
+        font-weight: 100;
+    }
+    
+    %light {
+        font-family: "proxima-nova",sans-serif;
+        font-style: normal;
+        font-weight: 300;
+    }
+    
+    %normal {
+        font-family: "proxima-nova",sans-serif;
+        font-style: normal;
+        font-weight: 400;
+    }
+    
+    %bold {
+        font-family: "proxima-nova",sans-serif;
+        font-style: normal;
+        font-weight: 700;
+    }
+    
+    /*  ==========================================================================
+        General
+        ========================================================================== */
+    
+    body {
+        // background: rgb(9,42,48);
+        background-image: linear-gradient( 340deg, rgb(0,137,150) 0%, rgb(9,42,48) 100%);
+        @extend %normal;
+        font-feature-settings: "kern" 1, "liga" 1, 'lnum' 1;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    body,
+    html {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 520px;
+        height: 520px;
+    }
+    
+    /*  ==========================================================================
+        Dial
+        ========================================================================== */
+    
+    .results__dial {
+        visibility: hidden;
+        text, tspan {
+            user-select: none;
+        }
+    }
+    
+    /*  Percentage Markers
+        ========================================================================== */
+    
+    .results__dial-percent-text {
+        text {
+            @extend %normal;
+            -webkit-font-smoothing: subpixel-antialiased; // make slightly bolder
+        }
+    }
+    
+    /*  Text
+        ========================================================================== */
+    
+    // dynamic <text> numbers wrappers
+    .results__dial-perc-text, .results__dial-results {
+        font-feature-settings: "tnum" 1; 
+        text-anchor: middle;
+    }
+    
+    // percentage <text> wrapper
+    .results__dial-perc-text, .results__dial-results { 
+        font-size: 24px;
+        @extend %bold;
+    }
+    
+    // percentage value <tspan>
+    .results__dial-perc {
+        @extend %bold;
+        text-anchor: middle;
+        font-size: 48px;
+        -webkit-font-smoothing: subpixel-antialiased; // make slightly bolder
+    }
+    
+    // savings value <tspan>
+    .results__dial-saving {
+        @extend %bold;
+        font-size: 48px;
+        -webkit-font-smoothing: subpixel-antialiased; // make slightly bolder
+    }
+    
+    /*  Dragger
+        ========================================================================== */
+    
+    .results__dial-drag-arrows, .results__dial-drag-pad {
+        pointer-events: none;
+    }
+    
+    .results__dial-drag-hit {
+        cursor: pointer;
+    }
+    
