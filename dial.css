@@ -34,7 +34,8 @@
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        width: 520px;
+        width: 90vw;
+        max-width: 520px;
         height: auto;
     }
     
@@ -233,4 +234,75 @@
         font-weight: 700;
         text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         letter-spacing: 1px;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .container {
+            width: 95vw;
+            top: 10px;
+        }
+        
+        .loan-amount-container {
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .loan-amount-text {
+            font-size: 18px;
+        }
+        
+        .loan-amount-value {
+            font-size: 20px;
+        }
+        
+        .loan-amount-markers {
+            font-size: 14px;
+        }
+        
+        .loan-amount-label {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            width: 98vw;
+            top: 5px;
+        }
+        
+        .loan-amount-container {
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .loan-amount-text {
+            font-size: 16px;
+        }
+        
+        .loan-amount-value {
+            font-size: 18px;
+        }
+        
+        .loan-amount-markers {
+            font-size: 12px;
+        }
+        
+        .loan-amount-label {
+            font-size: 12px;
+        }
+        
+        .loan-amount-slider {
+            height: 10px;
+        }
+        
+        .loan-amount-slider::-webkit-slider-thumb {
+            height: 18px;
+            width: 18px;
+        }
+        
+        .loan-amount-slider::-moz-range-thumb {
+            height: 18px;
+            width: 18px;
+        }
     }
