@@ -2,28 +2,8 @@
     Variables etc
     ========================================================================== */
 
-    %thin {
-        font-family: "proxima-nova",sans-serif;
-        font-style: normal;
-        font-weight: 100;
-    }
-    
-    %light {
-        font-family: "proxima-nova",sans-serif;
-        font-style: normal;
-        font-weight: 300;
-    }
-    
-    %normal {
-        font-family: "proxima-nova",sans-serif;
-        font-style: normal;
-        font-weight: 400;
-    }
-    
-    %bold {
-        font-family: "proxima-nova",sans-serif;
-        font-style: normal;
-        font-weight: 700;
+    :root {
+        --font-family: "proxima-nova", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     
     /*  ==========================================================================
@@ -31,9 +11,10 @@
         ========================================================================== */
     
     body {
-        // background: rgb(9,42,48);
-        background-image: linear-gradient( 340deg, rgb(0,137,150) 0%, rgb(9,42,48) 100%);
-        @extend %normal;
+        background-image: linear-gradient(340deg, rgb(0,137,150) 0%, rgb(9,42,48) 100%);
+        font-family: var(--font-family);
+        font-style: normal;
+        font-weight: 400;
         font-feature-settings: "kern" 1, "liga" 1, 'lnum' 1;
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
@@ -62,55 +43,62 @@
     
     .results__dial {
         visibility: hidden;
-        text, tspan {
-            user-select: none;
-        }
+    }
+    
+    .results__dial text, 
+    .results__dial tspan {
+        user-select: none;
     }
     
     /*  Percentage Markers
         ========================================================================== */
     
-    .results__dial-percent-text {
-        text {
-            @extend %normal;
-            -webkit-font-smoothing: subpixel-antialiased; // make slightly bolder
-        }
+    .results__dial-percent-text text {
+        font-family: var(--font-family);
+        font-style: normal;
+        font-weight: 400;
+        -webkit-font-smoothing: subpixel-antialiased;
     }
     
     /*  Text
         ========================================================================== */
     
-    // dynamic <text> numbers wrappers
-    .results__dial-perc-text, .results__dial-results {
+    .results__dial-perc-text, 
+    .results__dial-results {
         font-feature-settings: "tnum" 1; 
         text-anchor: middle;
     }
     
-    // percentage <text> wrapper
-    .results__dial-perc-text, .results__dial-results { 
+    .results__dial-perc-text, 
+    .results__dial-results { 
         font-size: 24px;
-        @extend %bold;
+        font-family: var(--font-family);
+        font-style: normal;
+        font-weight: 700;
     }
     
-    // percentage value <tspan>
     .results__dial-perc {
-        @extend %bold;
+        font-family: var(--font-family);
+        font-style: normal;
+        font-weight: 700;
         text-anchor: middle;
         font-size: 48px;
-        -webkit-font-smoothing: subpixel-antialiased; // make slightly bolder
+        -webkit-font-smoothing: subpixel-antialiased;
     }
     
-    // savings value <tspan>
     .results__dial-saving {
-        @extend %bold;
+        font-family: var(--font-family);
+        font-style: normal;
+        font-weight: 700;
         font-size: 48px;
-        -webkit-font-smoothing: subpixel-antialiased; // make slightly bolder
+        -webkit-font-smoothing: subpixel-antialiased;
     }
     
     /*  Dragger
         ========================================================================== */
     
-    .results__dial-drag-arrows, .results__dial-drag-pad {
+    .results__dial-drag-arrows, 
+    .results__dial-drag-pad {
         pointer-events: none;
     }
     
