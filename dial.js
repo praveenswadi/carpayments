@@ -158,8 +158,9 @@
         console.log('Calculated percentage:', percentage, 'from rotation:', val);
         
         $perc.text(percentage);
-        // Map rotation to drawSVG percentage (0-maxRotation degrees = 0-100% of arc)
-        var drawPercentage = (val/maxRotation) * 100;
+        // Map rotation to drawSVG percentage 
+        // Since maxRotation is 179.6 degrees (half circle), we need to map to 50% of the SVG path
+        var drawPercentage = (val/maxRotation) * 50; // 0-50% instead of 0-100%
         console.log('Draw percentage:', drawPercentage);
         
         gsap.set($trackPerc, {
