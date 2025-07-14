@@ -108,12 +108,12 @@
         }, "-=1.4")
 
         .to($trackPerc, 0.8, {
-            drawSVG: '0% 10%', // animate to the default 10%
+            drawSVG: '0% 0%', // animate to the default 1% (start position)
             ease: "power4.inOut"
         }, "-=0.4")
 
         .to($drag, 0.8, {
-            rotation: 36, // animate to the default 10%
+            rotation: 0, // animate to the default 1% (start position)
             ease: "power4.inOut",
             onUpdate: function() {
                 dragUpdate();
@@ -138,20 +138,32 @@
     
     function dragUpdate() {
         var val = gsap.getProperty($drag[0], "rotation");
-        var percentage = Math.round((val/180)*100/2);
+        console.log('dragUpdate called - rotation:', val, 'maxRotation:', maxRotation);
+        
+        // Map rotation (0-179.6 degrees) to APR (1-7%)
+        var percentage = 1 + (val/maxRotation) * 6; // 1% at 0deg, 7% at maxRotation
+        percentage = Math.round(percentage * 10) / 10; // Round to 1 decimal place
+        
         savings = Math.round(percentage * decreaseScale * tCost); // 1% savings = 0.006 x total infections cost
         if(savings < 0) {
             savings = 0;
         }
-        if(percentage > 50) {
-            percentage = 50;
+        if(percentage > 7) {
+            percentage = 7;
         }
-        else if(percentage < 0){
-            percentage = "0";
+        else if(percentage < 1){
+            percentage = 1;
         }
+        
+        console.log('Calculated percentage:', percentage, 'from rotation:', val);
+        
         $perc.text(percentage);
+        // Map rotation to drawSVG percentage (0-maxRotation degrees = 0-100% of arc)
+        var drawPercentage = (val/maxRotation) * 100;
+        console.log('Draw percentage:', drawPercentage);
+        
         gsap.set($trackPerc, {
-            drawSVG: '0% '+ val/180*100/2 +'%'
+            drawSVG: '0% '+ drawPercentage +'%'
         });
         $saving.text(savings.toLocaleString('en', {maximumSignificantDigits : 21})); // change! Locale not massively compatible yet especially on mobile
     }
