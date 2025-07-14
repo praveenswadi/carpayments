@@ -90,6 +90,15 @@
         font-size: 48px;
         -webkit-font-smoothing: subpixel-antialiased;
     }
+
+    .results__dial-term {
+        font-family: var(--font-family);
+        font-style: normal;
+        font-weight: 700;
+        text-anchor: middle;
+        font-size: 48px;
+        -webkit-font-smoothing: subpixel-antialiased;
+    }
     
     .results__dial-saving {
         font-family: var(--font-family);
