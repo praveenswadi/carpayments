@@ -31,23 +31,24 @@
 
 <div class="container">
 	
-	<div class="loan-amount-container">
-		<div class="loan-amount-label">
-			<span class="loan-amount-text">Loan Amount</span>
-			<span class="loan-amount-value">$25,000</span>
+	<div class="dial-section">
+		<div class="loan-amount-container">
+			<div class="loan-amount-label">
+				<span class="loan-amount-text">Loan Amount</span>
+				<span class="loan-amount-value">$25,000</span>
+			</div>
+			<input type="range" id="loanAmountSlider" class="loan-amount-slider" min="10000" max="50000" value="25000" step="1000">
+			<div class="loan-amount-markers">
+				<span>$10K</span>
+				<span>$20K</span>
+				<span>$30K</span>
+				<span>$40K</span>
+				<span>$50K</span>
+			</div>
 		</div>
-		<input type="range" id="loanAmountSlider" class="loan-amount-slider" min="10000" max="50000" value="25000" step="1000">
-		<div class="loan-amount-markers">
-			<span>$10K</span>
-			<span>$20K</span>
-			<span>$30K</span>
-			<span>$40K</span>
-			<span>$50K</span>
-		</div>
-	</div>
 
-	
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" class="results__dial">
+		
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" class="results__dial">
 		<title>Calculator Savings Dial</title>
 		<g class="results__dial-circles">
 			<path class="results__dial-outer" d="M260,64c110.46,0,200,89.54,200,200S370.46,464,260,464,60,374.46,60,264,149.54,64,260,64" fill="none" stroke="#64d3de" stroke-miterlimit="10" opacity="0.6"/>
@@ -117,6 +118,46 @@
 			<rect class="results__dial-drag-line-term" x="260" y="55" width="1" height="35" />
 		</g>
 	</svg>
+	</div>
+
+	<div class="payment-table-container">
+		<table class="payment-table">
+			<thead>
+				<tr>
+					<th>Loan Term</th>
+					<th>Monthly Payment</th>
+					<th>Total Paid</th>
+					<th>Total Interest</th>
+				</tr>
+			</thead>
+			<tbody id="paymentTableBody">
+				<tr>
+					<td>3 years</td>
+					<td class="payment-3">$0</td>
+					<td class="total-3">$0</td>
+					<td class="interest-3">$0</td>
+				</tr>
+				<tr>
+					<td>4 years</td>
+					<td class="payment-4">$0</td>
+					<td class="total-4">$0</td>
+					<td class="interest-4">$0</td>
+				</tr>
+				<tr>
+					<td>5 years</td>
+					<td class="payment-5">$0</td>
+					<td class="total-5">$0</td>
+					<td class="interest-5">$0</td>
+				</tr>
+				<tr>
+					<td>6 years</td>
+					<td class="payment-6">$0</td>
+					<td class="total-6">$0</td>
+					<td class="interest-6">$0</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 </div>
 

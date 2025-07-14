@@ -235,6 +235,7 @@
         loanAmount = parseInt($(this).val());
         $loanValue.text('$' + loanAmount.toLocaleString());
         dragUpdate(); // Recalculate payment
+        updatePaymentTable(); // Update payment table
     });
     
     function dragUpdate() {
@@ -298,6 +299,44 @@
             drawSVG: '0% '+ drawPercentage +'%'
         });
         $saving.text(monthlyPayment.toLocaleString('en', {maximumSignificantDigits : 21}));
+        updatePaymentTable(); // Update payment table when values change
+    }
+    
+    function updatePaymentTable() {
+        var aprVal = gsap.getProperty($dragAPR[0], "rotation");
+        var aprRate = 1 + (aprVal/maxRotationAPR) * 6; // Current APR
+        aprRate = Math.round(aprRate * 10) / 10; // Round to 1 decimal place
+        
+        // Clamp APR rate
+        if(aprRate > 7) aprRate = 7;
+        else if(aprRate < 1) aprRate = 1;
+        
+        var monthlyRate = aprRate / 12 / 100; // Convert APR to monthly decimal rate
+        var terms = [3, 4, 5, 6]; // Available loan terms
+        
+        for (var i = 0; i < terms.length; i++) {
+            var term = terms[i];
+            var numPayments = term * 12; // Convert years to months
+            var monthlyPayment;
+            
+            if (monthlyRate === 0) {
+                monthlyPayment = loanAmount / numPayments; // If 0% APR
+            } else {
+                monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+            }
+            
+            monthlyPayment = Math.round(monthlyPayment);
+            var totalPaid = monthlyPayment * numPayments;
+            var totalInterest = totalPaid - loanAmount;
+            
+            // Update table cells
+            $('.payment-' + term).text('$' + monthlyPayment.toLocaleString());
+            $('.total-' + term).text('$' + totalPaid.toLocaleString());
+            $('.interest-' + term).text('$' + totalInterest.toLocaleString());
+        }
     }
     
     console.clear();
+    
+    // Initialize the payment table on page load
+    updatePaymentTable();

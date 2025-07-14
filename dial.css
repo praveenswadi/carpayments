@@ -37,6 +37,9 @@
         width: 90vw;
         max-width: 520px;
         height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
     
     /*  ==========================================================================
@@ -301,8 +304,100 @@
             width: 18px;
         }
         
-        .loan-amount-slider::-moz-range-thumb {
-            height: 18px;
-            width: 18px;
-        }
-    }
+                 .loan-amount-slider::-moz-range-thumb {
+             height: 18px;
+             width: 18px;
+         }
+     }
+
+     /* Payment Table Styles */
+     .payment-table-container {
+         background: rgba(255,255,255,0.1);
+         border-radius: 15px;
+         backdrop-filter: blur(10px);
+         border: 1px solid rgba(100, 211, 222, 0.3);
+         padding: 20px;
+         margin-top: 20px;
+     }
+
+     .payment-table {
+         width: 100%;
+         border-collapse: collapse;
+         color: #fff;
+         font-family: var(--font-family);
+     }
+
+     .payment-table th {
+         background: rgba(100, 211, 222, 0.3);
+         color: #64d3de;
+         padding: 12px 8px;
+         text-align: left;
+         font-size: 14px;
+         font-weight: 600;
+         border-bottom: 1px solid rgba(100, 211, 222, 0.2);
+     }
+
+     .payment-table td {
+         padding: 10px 8px;
+         border-bottom: 1px solid rgba(100, 211, 222, 0.1);
+         font-size: 14px;
+     }
+
+     .payment-table tbody tr:hover {
+         background: rgba(100, 211, 222, 0.1);
+     }
+
+     .payment-table tbody tr:last-child td {
+         border-bottom: none;
+     }
+
+     /* Responsive positioning for larger screens */
+     @media (min-width: 1024px) and (orientation: landscape) {
+         .container {
+             flex-direction: row;
+             max-width: 900px;
+             align-items: flex-start;
+         }
+         
+         .payment-table-container {
+             margin-top: 0;
+             flex: 1;
+             margin-left: 30px;
+         }
+         
+         .dial-section {
+             flex: 0 0 520px;
+         }
+     }
+
+     @media (max-width: 768px) {
+         .payment-table-container {
+             padding: 15px;
+         }
+         
+         .payment-table th,
+         .payment-table td {
+             padding: 8px 6px;
+             font-size: 12px;
+         }
+         
+         .payment-table th {
+             font-size: 12px;
+         }
+     }
+
+     @media (max-width: 480px) {
+         .payment-table-container {
+             padding: 12px;
+         }
+         
+         .payment-table th,
+         .payment-table td {
+             padding: 6px 4px;
+             font-size: 11px;
+         }
+         
+         .payment-table th {
+             font-size: 11px;
+         }
+     }
