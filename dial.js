@@ -211,7 +211,20 @@
         inertia:true,
         bounds:{ maxRotation:-15, minRotation:-150 }, // 11 o'clock to 7 o'clock
         snap:function(endValue) { 
-            return Math.round(endValue / rotationSnapTerm) * rotationSnapTerm;
+            // Snap to positions that give whole year values with existing calculation
+            // Based on: loanTermYears = 3 + ((termVal - (-150)) / 135) * 3
+            var snapPositions = [-150, -105, -60, -15]; // Results in 3, 4, 5, 6 years
+            var closest = snapPositions[0];
+            var minDistance = Math.abs(endValue - snapPositions[0]);
+            
+            for (var i = 1; i < snapPositions.length; i++) {
+                var distance = Math.abs(endValue - snapPositions[i]);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closest = snapPositions[i];
+                }
+            }
+            return closest;
         },
         onDrag:dragUpdate,
         onThrowUpdate:dragUpdate
@@ -241,7 +254,7 @@
         console.log('Term calculation: termVal=', termVal, 'termRange=', termRange, 'termProgress=', termProgress, 'loanTermYears=', loanTermYears);
         
         aprRate = Math.round(aprRate * 10) / 10; // Round to 1 decimal place
-        loanTermYears = Math.round(loanTermYears * 10) / 10; // Round to 1 decimal place
+        loanTermYears = Math.round(loanTermYears); // Round to whole numbers only
         
         // Clamp APR rate
         if(aprRate > 7) {
