@@ -6,23 +6,33 @@
     gsap.registerPlugin(Draggable, DrawSVGPlugin, InertiaPlugin);
 
     var loanAmount = 25000; // Default loan amount
+    var loanTermYears = 3; // Default loan term (3-6 years)
     var monthlyPayment;
-    var maxRotation = 179.6;
-    var rotationSnap = 360/100; // snap to 1% increments
+    var maxRotationAPR = 179.6; // APR handle rotation (1%-7%)
+    var maxRotationTerm = 179.6; // Term handle rotation (3-6 years)
+    var rotationSnapAPR = 360/100; // snap to 1% increments
+    var rotationSnapTerm = 360/100; // snap to year increments
     var initEasing = "power4.inOut";
     var $circOuter = $('.results__dial-outer');
     var $circTrack = $('.results__dial-track');
     var $trackPerc = $('.results__dial-track-perc');
-    var $dialMarkers = $('.results__dial-marker');
-    var $dialMarkerNums = $('.results__dial-percent-text text');
-    var $drag = $('.results__dial-drag');
+    var $dialMarkersAPR = $('.results__dial-marker');
+    var $dialMarkerNumsAPR = $('.results__dial-percent-text text');
+    var $dialMarkersTerm = $('.results__dial-marker-term');
+    var $dialMarkerNumsTerm = $('.results__dial-term-text text');
+    var $dragAPR = $('.results__dial-drag-apr');
+    var $dragTerm = $('.results__dial-drag-term');
     var $dragPad = $('.results__dial-drag-pad');
+    var $dragPadTerm = $('.results__dial-drag-pad-term');
     var $dragPadHit = $('.results__dial-drag-hit');
+    var $dragPadHitTerm = $('.results__dial-drag-hit-term');
     var $dragLine = $('.results__dial-drag-line');
+    var $dragLineTerm = $('.results__dial-drag-line-term');
     var $dragInner = $('.results__dial-drag-inner');
     // var $precText = $('.results__dial-perc-text');
     var $resultsText = $('.results__text');
     var $perc = $('.results__dial-perc');
+    var $term = $('.results__dial-term');
     // var $effectText = $('.results__dial-effect');
     // var $savingText = $('.results__dial-results');
     var $saving = $('.results__dial-saving');
@@ -39,13 +49,23 @@
             drawSVG: '0% 0%'
         });
     
-    gsap.set($drag, {
-            transformOrigin:"50% 259", // set rotationY to the center of the dial
+    gsap.set($dragAPR, {
+            transformOrigin:"50% 259", // set rotation to the center of the dial for APR
             rotation: 0
         })
     
-    gsap.set($dialMarkers, {
-            transformOrigin:"50% 209" // set rotationY to the center of the dial
+    gsap.set($dragTerm, {
+            transformOrigin:"50% 259", // set rotation to the center of the dial for loan term
+            rotation: -150 // Start at 11 o'clock (3 years)
+        })
+    
+    gsap.set($dialMarkersAPR, {
+            transformOrigin:"50% 209" // set rotation to the center of the dial
+            // rotation: 0
+        })
+    
+    gsap.set($dialMarkersTerm, {
+            transformOrigin:"50% 209" // set rotation to the center of the dial
             // rotation: 0
         })
     
@@ -63,6 +83,20 @@
         }
     );
     
+    $dragPadHitTerm.hover(
+        function() {
+            gsap.to($dragPadTerm, 0.4, {
+                transformOrigin:"center center",
+                scale: 1.2,
+                ease: "elastic.out(0.9, 0.3)"
+            });
+        }, function() {
+            gsap.to($dragPadTerm, 0.2, {
+                scale: 1
+            });
+        }
+    );
+    
     
         dialTL.to($circTrack, 0.8, {
             drawSVG: '0% 100%',
@@ -74,24 +108,48 @@
             ease: "power4.inOut"
         }, "-=0.6")
 
-        .to($dialMarkers, 0.8, {
+        .to($dialMarkersAPR, 0.8, {
             rotation: function(i) { return 180 - 36*i; },
             ease: "power2.out",
             stagger: 0.1
         }, "-=0.4")
 
-        .from($dialMarkerNums, 0.8, {
+        .to($dialMarkersTerm, 0.8, {
+            rotation: function(i) { 
+                // Position markers for loan terms: 3yr, 4yr, 5yr, 6yr
+                // From 11 o'clock (-150°) to 7 o'clock (210°) anti-clockwise
+                var positions = [-150, -105, -60, -15]; // degrees for each term
+                return positions[i] || -150;
+            },
+            ease: "power2.out",
+            stagger: 0.1
+        }, "-=0.2")
+
+        .from($dialMarkerNumsAPR, 0.8, {
             autoAlpha: 0,
             x: 20,
             ease: "power2.out",
             stagger: 0.1
         }, "-=0.6")
 
+        .from($dialMarkerNumsTerm, 0.8, {
+            autoAlpha: 0,
+            x: -20,
+            ease: "power2.out",
+            stagger: 0.1
+        }, "-=0.4")
+
         .from($dragLine, 0.3, {
             scaleY: 0,
             transformOrigin: "0% 100%",
             ease: "power2.in"
         }, "-=1.2")
+
+        .from($dragLineTerm, 0.3, {
+            scaleY: 0,
+            transformOrigin: "0% 100%",
+            ease: "power2.in"
+        }, "-=1.0")
 
         .from($dragInner, 0.5, {
             scale: 0,
@@ -112,7 +170,7 @@
             ease: "power4.inOut"
         }, "-=0.4")
 
-        .to($drag, 0.8, {
+        .to($dragAPR, 0.8, {
             rotation: 0, // animate to the default 1% (start position)
             ease: "power4.inOut",
             onUpdate: function() {
@@ -122,15 +180,38 @@
                 console.log('Animation complete, calling dragUpdate');
                 dragUpdate();
             }
+        }, "-=1.0")
+
+        .to($dragTerm, 0.8, {
+            rotation: -150, // animate to the default 3 years (11 o'clock)
+            ease: "power4.inOut",
+            onUpdate: function() {
+                dragUpdate();
+            },
+            onComplete: function() {
+                console.log('Term animation complete, calling dragUpdate');
+                dragUpdate();
+            }
         }, "-=1.0");
     
     
-    Draggable.create($drag, {
+    Draggable.create($dragAPR, {
         type:"rotation",
         inertia:true,
-        bounds:{ maxRotation:maxRotation, minRotation:0 },
+        bounds:{ maxRotation:maxRotationAPR, minRotation:0 },
         snap:function(endValue) { 
-            return Math.round(endValue / rotationSnap) * rotationSnap;
+            return Math.round(endValue / rotationSnapAPR) * rotationSnapAPR;
+        },
+        onDrag:dragUpdate,
+        onThrowUpdate:dragUpdate
+    })
+
+    Draggable.create($dragTerm, {
+        type:"rotation",
+        inertia:true,
+        bounds:{ maxRotation:-15, minRotation:-150 }, // 11 o'clock to 7 o'clock
+        snap:function(endValue) { 
+            return Math.round(endValue / rotationSnapTerm) * rotationSnapTerm;
         },
         onDrag:dragUpdate,
         onThrowUpdate:dragUpdate
@@ -144,12 +225,23 @@
     });
     
     function dragUpdate() {
-        var val = gsap.getProperty($drag[0], "rotation");
-        console.log('dragUpdate called - rotation:', val, 'maxRotation:', maxRotation);
+        var aprVal = gsap.getProperty($dragAPR[0], "rotation");
+        var termVal = gsap.getProperty($dragTerm[0], "rotation");
+        console.log('dragUpdate called - APR rotation:', aprVal, 'Term rotation:', termVal);
         
-        // Map rotation (0-179.6 degrees) to APR (1-7%)
-        var aprRate = 1 + (val/maxRotation) * 6; // 1% at 0deg, 7% at maxRotation
+        // Map APR rotation (0-179.6 degrees) to APR (1-7%)
+        var aprRate = 1 + (aprVal/maxRotationAPR) * 6; // 1% at 0deg, 7% at maxRotation
+        
+        // Map term rotation (-150 to -15 degrees) to loan terms (3-6 years)
+        // -150deg = 3 years, -105deg = 4 years, -60deg = 5 years, -15deg = 6 years
+        var termRange = -15 - (-150); // 135 degrees total range
+        var termProgress = (termVal - (-150)) / termRange; // 0 to 1
+        loanTermYears = 3 + (termProgress * 3); // 3 to 6 years
+        
+        console.log('Term calculation: termVal=', termVal, 'termRange=', termRange, 'termProgress=', termProgress, 'loanTermYears=', loanTermYears);
+        
         aprRate = Math.round(aprRate * 10) / 10; // Round to 1 decimal place
+        loanTermYears = Math.round(loanTermYears * 10) / 10; // Round to 1 decimal place
         
         // Clamp APR rate
         if(aprRate > 7) {
@@ -159,10 +251,18 @@
             aprRate = 1;
         }
         
+        // Clamp loan term
+        if(loanTermYears > 6) {
+            loanTermYears = 6;
+        }
+        else if(loanTermYears < 3){
+            loanTermYears = 3;
+        }
+        
         // Calculate monthly car payment
-        // P = loan amount, r = monthly interest rate, n = number of payments (60 months = 5 years)
+        // P = loan amount, r = monthly interest rate, n = number of payments
         var monthlyRate = aprRate / 12 / 100; // Convert APR to monthly decimal rate
-        var numPayments = 60; // 5 years
+        var numPayments = loanTermYears * 12; // Convert years to months
         
         if (monthlyRate === 0) {
             monthlyPayment = loanAmount / numPayments; // If 0% APR
@@ -172,12 +272,13 @@
         
         monthlyPayment = Math.round(monthlyPayment);
         
-        console.log('Calculated APR:', aprRate, '% for loan amount:', loanAmount, 'Monthly payment:', monthlyPayment);
+        console.log('Calculated APR:', aprRate, '% | Loan term:', loanTermYears, 'years | Loan amount:', loanAmount, '| Monthly payment:', monthlyPayment);
         
         $perc.text(aprRate);
-        // Map rotation to drawSVG percentage 
-        // Since maxRotation is 179.6 degrees (half circle), we need to map to 50% of the SVG path
-        var drawPercentage = (val/maxRotation) * 50; // 0-50% instead of 0-100%
+        $term.text(Math.round(loanTermYears)); // Update the center term display
+        // Map APR rotation to drawSVG percentage 
+        // Since maxRotationAPR is 179.6 degrees (half circle), we need to map to 50% of the SVG path
+        var drawPercentage = (aprVal/maxRotationAPR) * 50; // 0-50% instead of 0-100%
         console.log('Draw percentage:', drawPercentage);
         
         gsap.set($trackPerc, {
