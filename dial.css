@@ -105,4 +105,126 @@
     .results__dial-drag-hit {
         cursor: pointer;
     }
-    
+
+    /*  ==========================================================================
+        Loan Amount Slider
+        ========================================================================== */
+
+    .loan-amount-container {
+        margin-bottom: 40px;
+        text-align: center;
+        position: relative;
+        padding: 20px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(100, 211, 222, 0.3);
+    }
+
+    .loan-amount-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        color: #64d3de;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .loan-amount-slider {
+        width: 100%;
+        height: 12px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: linear-gradient(to right, #50afb8 0%, #64d3de 100%);
+        border-radius: 10px;
+        outline: none;
+        margin-bottom: 10px;
+        position: relative;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .loan-amount-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+        border: 3px solid #64d3de;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(100, 211, 222, 0.4), 
+                    0 2px 6px rgba(0,0,0,0.2),
+                    inset 0 1px 2px rgba(255,255,255,0.8);
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .loan-amount-slider::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(100, 211, 222, 0.6), 
+                    0 3px 8px rgba(0,0,0,0.3),
+                    inset 0 1px 2px rgba(255,255,255,0.8);
+    }
+
+    .loan-amount-slider::-webkit-slider-thumb:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 8px rgba(100, 211, 222, 0.8), 
+                    0 1px 4px rgba(0,0,0,0.4),
+                    inset 0 1px 2px rgba(255,255,255,0.8);
+    }
+
+    .loan-amount-slider::-moz-range-thumb {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+        border: 3px solid #64d3de;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(100, 211, 222, 0.4), 
+                    0 2px 6px rgba(0,0,0,0.2),
+                    inset 0 1px 2px rgba(255,255,255,0.8);
+        transition: all 0.2s ease;
+    }
+
+    .loan-amount-slider::-moz-range-thumb:hover {
+        transform: scale(1.1);
+    }
+
+    .loan-amount-markers {
+        display: flex;
+        justify-content: space-between;
+        color: #64d3de;
+        font-size: 12px;
+        opacity: 0.8;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    /* Add some fancy glow effects */
+    .loan-amount-container::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #64d3de, #50afb8, #64d3de);
+        border-radius: 17px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .loan-amount-container:hover::before {
+        opacity: 0.3;
+    }
+
+    /* Enhance the value display */
+    .loan-amount-value {
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        letter-spacing: 1px;
+    }

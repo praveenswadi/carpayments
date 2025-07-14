@@ -5,10 +5,8 @@
     // Register GSAP plugins
     gsap.registerPlugin(Draggable, DrawSVGPlugin, InertiaPlugin);
 
-    var tCost = 8501373;
-    var hhCost = tCost * 0.5;;
-    var decreaseScale = 0.006; // per 1%
-    var savings;
+    var loanAmount = 25000; // Default loan amount
+    var monthlyPayment;
     var maxRotation = 179.6;
     var rotationSnap = 360/100; // snap to 1% increments
     var initEasing = "power4.inOut";
@@ -28,6 +26,8 @@
     // var $effectText = $('.results__dial-effect');
     // var $savingText = $('.results__dial-results');
     var $saving = $('.results__dial-saving');
+    var $loanSlider = $('#loanAmountSlider');
+    var $loanValue = $('.loan-amount-value');
     var dialTL = gsap.timeline();
     
     gsap.set('.results__dial', {
@@ -136,28 +136,45 @@
         onThrowUpdate:dragUpdate
     })
     
+    // Loan amount slider event listener
+    $loanSlider.on('input', function() {
+        loanAmount = parseInt($(this).val());
+        $loanValue.text('$' + loanAmount.toLocaleString());
+        dragUpdate(); // Recalculate payment
+    });
+    
     function dragUpdate() {
         var val = gsap.getProperty($drag[0], "rotation");
         console.log('dragUpdate called - rotation:', val, 'maxRotation:', maxRotation);
         
         // Map rotation (0-179.6 degrees) to APR (1-7%)
-        var percentage = 1 + (val/maxRotation) * 6; // 1% at 0deg, 7% at maxRotation
-        percentage = Math.round(percentage * 10) / 10; // Round to 1 decimal place
+        var aprRate = 1 + (val/maxRotation) * 6; // 1% at 0deg, 7% at maxRotation
+        aprRate = Math.round(aprRate * 10) / 10; // Round to 1 decimal place
         
-        savings = Math.round(percentage * decreaseScale * tCost); // 1% savings = 0.006 x total infections cost
-        if(savings < 0) {
-            savings = 0;
+        // Clamp APR rate
+        if(aprRate > 7) {
+            aprRate = 7;
         }
-        if(percentage > 7) {
-            percentage = 7;
-        }
-        else if(percentage < 1){
-            percentage = 1;
+        else if(aprRate < 1){
+            aprRate = 1;
         }
         
-        console.log('Calculated percentage:', percentage, 'from rotation:', val);
+        // Calculate monthly car payment
+        // P = loan amount, r = monthly interest rate, n = number of payments (60 months = 5 years)
+        var monthlyRate = aprRate / 12 / 100; // Convert APR to monthly decimal rate
+        var numPayments = 60; // 5 years
         
-        $perc.text(percentage);
+        if (monthlyRate === 0) {
+            monthlyPayment = loanAmount / numPayments; // If 0% APR
+        } else {
+            monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+        }
+        
+        monthlyPayment = Math.round(monthlyPayment);
+        
+        console.log('Calculated APR:', aprRate, '% for loan amount:', loanAmount, 'Monthly payment:', monthlyPayment);
+        
+        $perc.text(aprRate);
         // Map rotation to drawSVG percentage 
         // Since maxRotation is 179.6 degrees (half circle), we need to map to 50% of the SVG path
         var drawPercentage = (val/maxRotation) * 50; // 0-50% instead of 0-100%
@@ -166,7 +183,7 @@
         gsap.set($trackPerc, {
             drawSVG: '0% '+ drawPercentage +'%'
         });
-        $saving.text(savings.toLocaleString('en', {maximumSignificantDigits : 21})); // change! Locale not massively compatible yet especially on mobile
+        $saving.text(monthlyPayment.toLocaleString('en', {maximumSignificantDigits : 21}));
     }
     
     console.clear();

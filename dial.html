@@ -31,6 +31,22 @@
 
 <div class="container">
 	
+	<div class="loan-amount-container">
+		<div class="loan-amount-label">
+			<span class="loan-amount-text">Loan Amount</span>
+			<span class="loan-amount-value">$25,000</span>
+		</div>
+		<input type="range" id="loanAmountSlider" class="loan-amount-slider" min="10000" max="50000" value="25000" step="1000">
+		<div class="loan-amount-markers">
+			<span>$10K</span>
+			<span>$20K</span>
+			<span>$30K</span>
+			<span>$40K</span>
+			<span>$50K</span>
+		</div>
+	</div>
+
+	
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" class="results__dial">
 		<title>Calculator Savings Dial</title>
 		<g class="results__dial-circles">
@@ -59,8 +75,8 @@
 				<tspan class="results__dial-perc" text-anchor="start">1</tspan>
 				<tspan baseline-shift="super">%</tspan>
 			</text>
-			<text class="results__dial-effect results__text" x="154.43" y="236.67" font-size="16" fill="#64d3de">APR RATE
-				<tspan x="175" dy="24">CALCULATION:</tspan>
+			<text class="results__dial-effect results__text" x="134.43" y="236.67" font-size="16" fill="#64d3de">MONTHLY
+				<tspan x="154" dy="24">PAYMENT:</tspan>
 			</text>
 			<text class="results__dial-results results__text" text-anchor="middle" x="250" y="318" fill="#64d3de">
 				<tspan baseline-shift="super">$</tspan>
